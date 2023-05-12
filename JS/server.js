@@ -1,4 +1,4 @@
-
+//This section of code is setting up the connection to mysql and inquirer 
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
 require("console.table");
@@ -17,7 +17,7 @@ connection.connect(function (err) {
  
     firstPrompt();
 });
-
+//This section of code is setting up the first prompt for the user to choose what they would like to do and setting a break for each choice along with a default end to the connection.
 function firstPrompt() {
 
   inquirer
@@ -66,10 +66,10 @@ function firstPrompt() {
       }
     });
 }
-
+// This section runs the view employee function and displays the table of employees. 
 function viewEmployee() {
   console.log("Viewing employees\n");
-
+// this is the query that is being run to display the table of employees. It is joining the tables of employee, role, department, and manager to display the information in the table.
   var query =
     `SELECT e.id, e.first_name, e.last_name, r.title, d.name AS department, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager
   FROM employee as e
@@ -90,7 +90,7 @@ function viewEmployee() {
   });
 
 }
-
+// This function is to view the employees by department. It is using the same query as the view employee function but is grouping the employees by department.
 function viewEmployeeByDepartment() {
   console.log("Viewing employees by department\n");
   //inquirer.prompt(departments)
@@ -110,7 +110,7 @@ function viewEmployeeByDepartment() {
     promptDepartment(departmentChoices);
   });
 }
-
+// This function is to prompt the user to choose which department they would like to view the employees from.
 function promptDepartment(departmentChoices) {
 
   inquirer
@@ -124,7 +124,7 @@ function promptDepartment(departmentChoices) {
     ])
     .then(function (answer) {
       console.log("answer ", answer.departmentId);
-
+// This query is to display the employees by department. It is joining the tables of employee, role, and department to display the information in the table.
       var query =
         `SELECT e.id, e.first_name, e.last_name, r.title, d.name AS department 
   FROM employee as e
@@ -133,15 +133,7 @@ function promptDepartment(departmentChoices) {
   JOIN department as d
   ON d.id = r.department_id
   WHERE d.id = ?`
-  // var query =
-  //   `SELECT employee.id, employee.first_name, role.title
-  // FROM employee as e
-  // LEFT JOIN role as r
-	// ON e.role_id = r.id
-  // LEFT JOIN department as d
-  // ON r.department_id = d.id 
-  // WHERE d.id = 
-  // GROUP BY department.id, department.name`
+
       connection.query(query, answer.departmentId, function (err, res) {
         if (err) throw err;
 
@@ -153,10 +145,10 @@ function promptDepartment(departmentChoices) {
     });
 }
 
-
+// This function is to add an employee to the table. It is using the same query as the view employee function but is grouping the employees by department.
 function addEmployee() {
   console.log("Inserting an employee!")
-
+// This query is to display the employees by department. It is joining the tables of employee, role, and department to display the information in the table.
   var query =
     `SELECT r.id, r.title, r.salary 
       FROM role r`
@@ -174,7 +166,7 @@ function addEmployee() {
     promptInsert(roleChoices);
   });
 }
-
+// This function is to prompt the user to choose which department they would like to view the employees from.
 function promptInsert(roleChoices) {
 
   inquirer
@@ -218,10 +210,10 @@ function promptInsert(roleChoices) {
         });
     });
 }
-
+// This function is to remove an employee from the table. It is using the same query as the view employee function but is grouping the employees by department.
 function removeEmployees() {
   console.log("Deleting an employee");
-
+// This query is to display the employees by department. It is joining the tables of employee, role, and department to display the information in the table.
   var query =
     `SELECT e.id, e.first_name, e.last_name
       FROM employee e`
@@ -239,7 +231,7 @@ function removeEmployees() {
     promptDelete(deleteEmployeeChoices);
   });
 }
-
+// This function is to prompt the user to choose which department they would like to view the employees from. 
 function promptDelete(deleteEmployeeChoices) {
 
   inquirer
@@ -265,7 +257,7 @@ function promptDelete(deleteEmployeeChoices) {
       });
     });
 }
-
+// This function is to update an employee's role. It is using the same query as the view employee function but is grouping the employees by department.
 function updateEmployeeRole() { 
   employeeArray();
 
@@ -273,7 +265,7 @@ function updateEmployeeRole() {
 
 function employeeArray() {
   console.log("Updating an employee");
-
+// This query is to display the employees by department. It is joining the tables of employee, role, and department to display the information in the table.
   var query =
     `SELECT e.id, e.first_name, e.last_name, r.title, d.name AS department, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager
   FROM employee e
@@ -297,10 +289,10 @@ function employeeArray() {
     roleArray(employeeChoices);
   });
 }
-
+// This function is to prompt the user to choose which department they would like to view the employees from.
 function roleArray(employeeChoices) {
   console.log("Updating an role");
-
+// This query is to display the employees by department. It is joining the tables of employee, role, and department to display the information in the table.
   var query =
     `SELECT r.id, r.title, r.salary 
   FROM role r`
@@ -319,7 +311,7 @@ function roleArray(employeeChoices) {
     promptEmployeeRole(employeeChoices, roleChoices);
   });
 }
-
+// This function is to prompt the user to choose which department they would like to view the employees from. It is using the same query as the view employee function but is grouping the employees by department.
 function promptEmployeeRole(employeeChoices, roleChoices) {
 
   inquirer
@@ -355,7 +347,7 @@ function promptEmployeeRole(employeeChoices, roleChoices) {
         });
     });
 }
-
+// THis function is to add a role to the table. It is using the same query as the view employee function but is grouping the employees by department.
 function addRole() {
 
   var query =
@@ -375,7 +367,7 @@ function addRole() {
     promptAddRole(departmentChoices);
   });
 }
-
+// This function is to prompt the user to choose which department they would like to view the employees from.
 function promptAddRole(departmentChoices) {
 
   inquirer
